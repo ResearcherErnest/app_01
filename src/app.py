@@ -6,17 +6,17 @@ import plotly.express as px
 import json
 import requests
 from datetime import datetime
+from pathlib import Path
 
+path = Path(__file__).parent.parent / 'data' / 'Superstore.xlsx'
+
+# Check if the file exists before loading
+if not path.exists():
+    raise FileNotFoundError(f"Excel file not found at {path}")
 
 # Load the dataset
-Orders = pd.read_excel(
-    r"C:\Users\Ernest PC\OneDrive\Documents\Superstore.xlsx",
-    sheet_name='Orders', engine='openpyxl'
-)
-Returns = pd.read_excel(
-    r"C:\Users\Ernest PC\OneDrive\Documents\Superstore.xlsx",
-    sheet_name='Returns', engine='openpyxl'
-)
+Orders = pd.read_excel(str(path), sheet_name='Orders', engine='openpyxl')
+Returns = pd.read_excel(str(path), sheet_name='Returns', engine='openpyxl')
 
 # Merge Orders and Returns
 df = pd.merge(Orders, Returns, how='left', on='Order ID')
